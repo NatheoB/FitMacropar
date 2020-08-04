@@ -125,32 +125,32 @@ function(input, output, session){
 
   # Models comparison
     # AIC
-  AIC <- reactive(c(
-    calc.AIC(dpd.nb()[data.sampling+1], 2),
-    calc.AIC(dpd.pois()[data.sampling+1], 1),
-    calc.AIC(dpd.model1()[data.sampling+1], 1)
-  ))
+  comparison <- reactiveValues()
+  comparison$AIC <- reactive({
+    c(calc.AIC(dpd.nb()[data.sampling+1], 2),
+      calc.AIC(dpd.pois()[data.sampling+1], 1),
+      calc.AIC(dpd.model1()[data.sampling+1], 1))
+  })
+  comparison$AIC.rank <- reactive(rank.models(comparison$AIC()))
 
     # BIC
-  BIC <- reactive(c(
-    calc.BIC(dpd.nb()[data.sampling+1], 2, data.sampleSize),
-    calc.BIC(dpd.pois()[data.sampling+1], 1, data.sampleSize),
-    calc.BIC(dpd.model1()[data.sampling+1], 1, data.sampleSize)
-  ))
+  comparison$BIC <- reactive({
+    c(calc.BIC(dpd.nb()[data.sampling+1], 2, data.sampleSize),
+      calc.BIC(dpd.pois()[data.sampling+1], 1, data.sampleSize),
+      calc.BIC(dpd.model1()[data.sampling+1], 1, data.sampleSize))
+  })
+  comparison$BIC.rank <- reactive(rank.models(comparison$BIC()))
 
     # Results
-  comparison <- matrix(
-    data = rep(0, 4 * (length(plot.grades)-1)),
-    nrow = length(plot.grades)-1,
-    ncol = 4,
-    byrow = TRUE
-  )
-  dimnames(comparison) <- list(
-    plot.grades[1:(length(plot.grades)-1)],
-    c("AIC", "AIC.Rank", "BIC", "BIC.Rank"))
 
   # Render models comparison
   output$comparison <- renderTable({
-    comparison
+    df <- reactive(data.frame(
+      AIC = comparison$AIC(),
+      AIC.rank = comparison$AIC.rank(),
+      BIC = comparison$BIC(),
+      BIC.rank = comparison$BIC.rank()
+    ))
+    df()
   }, rownames = TRUE)
 }
