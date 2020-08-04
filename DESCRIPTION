@@ -1,0 +1,11 @@
+Package: FitMacropar
+Type: Package
+Title: FitMacropar
+Version: 0.0.1
+Author: BEAUCHAMP Natheo
+Maintainer: BEAUCHAMP Natheo <natheo.beauchamp@agrocampus-ouest.fr>
+Description: Find the best model to fit a given abundance data set
+License: 
+Encoding: UTF-8
+LazyData: FALSE
+RoxygenNote: 7.1.1
