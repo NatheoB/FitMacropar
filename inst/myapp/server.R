@@ -120,7 +120,7 @@ function(input, output, session){
             col = plot.cols[as.numeric(input$hist.models)],
             xlab = "No of parasites / host", ylab = "Frequency",
             legend.text = plot.grades[as.numeric(input$hist.models)],
-            main = data.name)
+            main = "Macroparasite multiplicity")
   })
 
   # Models comparison
